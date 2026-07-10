@@ -1,0 +1,46 @@
+Cell 23
+from sklearn.metrics import r2_score
+import matplotlib.pyplot as plt
+
+# 1. Khởi tạo danh sách lưu kết quả
+n_trees_range = range(10, 501, 50)
+train_scores = []
+test_scores = []
+
+print("Calculating learning curve...")
+for n in n_trees_range:
+    # Huấn luyện mô hình tạm thời với n cây
+    # Sử dụng RandomForestRegressor từ sklearn (đã import ở cell trên)
+    temp_rf = RandomForestRegressor(n_estimators=n, max_depth=15, min_samples_split=5, min_samples_leaf=2, max_features=1.0, random_state=42, n_jobs=-1)
+    temp_rf.fit(X_train, y_train)
+    
+    # Tính toán R2
+    train_score = r2_score(y_train, temp_rf.predict(X_train))
+    test_score = r2_score(y_test, temp_rf.predict(X_test))
+    
+    train_scores.append(train_score)
+    test_scores.append(test_score)
+    print(f"n_estimators={n} - Train R2: {train_score:.4f}, Test R2: {test_score:.4f}")
+
+# 2. Vẽ đồ thị
+plt.figure(figsize=(10, 6))
+plt.plot(n_trees_range, train_scores, label='Train R²', marker='o', linewidth=2)
+plt.plot(n_trees_range, test_scores, label='Test R²', marker='s', linewidth=2)
+
+plt.xlabel('Number of Trees (n_estimators)', fontsize=12)
+plt.ylabel('R² Score', fontsize=12)
+plt.title('Learning Curve: Train vs Test R² Performance', fontsize=14, fontweight='bold')
+plt.grid(True, alpha=0.3)
+plt.legend()
+plt.ylim(min(test_scores) - 0.05, 1.05) 
+plt.show()
+-----
+[31m---------------------------------------------------------------------------[39m[31mTypeError[39m                                 Traceback (most recent call last)[36mCell[39m[36m [39m[32mIn[17][39m[32m, line 13[39m
+[32m      9[39m [38;5;28mprint[39m([33m"[39m[33mCalculating learning curve...[39m[33m"[39m)
+[32m     10[39m [38;5;28;01mfor[39;00m n [38;5;129;01min[39;00m n_trees_range:
+[32m     11[39m     [38;5;66;03m# Huấn luyện mô hình tạm thời với n cây[39;00m
+[32m     12[39m     [38;5;66;03m# Sử dụng RandomForestRegressor từ sklearn (đã import ở cell trên)[39;00m
+[32m---> [39m[32m13[39m     temp_rf = [43mRandomForestRegressor[49m[43m([49m[43mn_estimators[49m[43m=[49m[43mn[49m[43m,[49m[43m [49m[43mmax_depth[49m[43m=[49m[32;43m15[39;49m[43m,[49m[43m [49m[43mmin_samples_split[49m[43m=[49m[32;43m5[39;49m[43m,[49m[43m [49m[43mmin_samples_leaf[49m[43m=[49m[32;43m2[39;49m[43m,[49m[43m [49m[43mmax_features[49m[43m=[49m[32;43m1.0[39;49m[43m,[49m[43m [49m[43mrandom_state[49m[43m=[49m[32;43m42[39;49m[43m,[49m[43m [49m[43mn_jobs[49m[43m=[49m[43m-[49m[32;43m1[39;49m[43m)[49m
+[32m     14[39m     temp_rf.fit(X_train, y_train)
+[32m     16[39m     [38;5;66;03m# Tính toán R2[39;00m
+[31mTypeError[39m: RandomForestRegressor.__init__() got an unexpected keyword argument 'min_samples_leaf'

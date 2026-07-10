@@ -1,0 +1,72 @@
+﻿Data trÆ°á»›c xá»­ lÃ½: (6256, 9)
+
+=> KÃ­ch thÆ°á»›c dataset sau Multi/One Hot Encoding: (6236, 251)
+
+Train Dataset: X_train=(4988, 591), y_train=(4988,)
+
+Test Dataset : X_test=(1248, 591),  y_test=(1248,)
+
+Random Forest Model Parameters:
+
+{'bootstrap': True, 'ccp_alpha': 0.0, 'criterion': 'squared_error', 'max_depth': 15, 'max_features': 1.0, 'max_leaf_nodes': None, 'max_samples': None, 'min_impurity_decrease': 0.0, 'min_samples_leaf': 2, 'min_samples_split': 5, 'min_weight_fraction_leaf': 0.0, 'monotonic_cst': None, 'n_estimators': 500, 'n_jobs': -1, 'oob_score': False, 'random_state': 42, 'verbose': 0, 'warm_start': False}
+
+
+
+============================================================
+
+TRAINING RANDOM FOREST MODEL...
+
+============================================================
+
+
+
+âœ“ Training completed!
+
+Training time: 9.7911 seconds (0.16 minutes)
+
+
+
+============================================================
+
+RANDOM FOREST MODEL EVALUATION RESULTS
+
+============================================================
+
+
+
+ðŸ“Š TRAINING SET:
+
+  MAE:  407,604 VND
+
+  MSE:  360,811,002,206
+
+  RMSE: 600,675 VND
+
+  RÂ² Score: 0.7932
+
+  Prediction time: 0.1432 seconds
+
+
+
+ðŸ“Š TESTING SET:
+
+  MAE:  454,276 VND
+
+  MSE:  535,411,869,842
+
+  RMSE: 731,718 VND
+
+  RÂ² Score: 0.7277
+
+  Prediction time: 0.1240 seconds
+
+
+
+ðŸ“ˆ OVERALL PERFORMANCE:
+
+  Accuracy (RÂ²): 72.77%
+
+  Average error: Â±454,276 VND
+
+  Total time: Training=9.79s + Prediction=0.1240s
+

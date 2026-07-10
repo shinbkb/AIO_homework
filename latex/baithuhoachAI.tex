@@ -1,0 +1,139 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{booktabs}
+\usepackage{float}
+
+\geometry{margin=2.5cm}
+
+% Định dạng cho mã MATLAB
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\title{Chương 4: BỘ LỌC TÍN HIỆU}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Tổng quan về bộ lọc}
+\subsection{Khái niệm}
+Bộ lọc là một hệ thống thiết kế để loại bỏ các thành phần không mong muốn (nhiễu) hoặc trích xuất các dải tần số hữu ích từ tín hiệu[cite: 5]. Bộ lọc cho phép các thành phần tần số nhất định đi qua và suy giảm các thành phần khác[cite: 13].
+
+\subsection{Đáp ứng xung và Phép chập}
+Quan hệ vào-ra của hệ thống LTI được mô tả bởi phép chập[cite: 15]:
+\begin{equation}
+    y(n) = \sum_{k=-\infty}^{\infty} x(k)h(n-k) = x(n) * h(n)
+\end{equation}
+Trong đó $h(n)$ là đáp ứng xung của hệ thống[cite: 21].
+
+\subsection{Phương trình sai phân tổng quát}
+Hệ thống rời rạc tuyến tính được biểu diễn bằng phương trình[cite: 25, 27]:
+\begin{equation}
+    \sum_{k=0}^{N} a_k y(n-k) = \sum_{m=0}^{M} b_m x(n-m)
+\end{equation}
+
+\subsection{Hàm truyền (Transfer Function)}
+Hàm truyền $H(z)$ là tỷ số giữa biến đổi Z của đầu ra và đầu vào[cite: 33, 34]:
+\begin{equation}
+    H(z) = \frac{Y(z)}{X(z)}
+\end{equation}
+
+\section{Tính chất và Phân loại}
+\begin{itemize}
+    \item \textbf{Ổn định BIBO}: Hệ thống ổn định khi $\sum_{n=-\infty}^{\infty} |h(n)| < \infty$ hoặc tất cả các cực của $H(z)$ nằm trong vòng tròn đơn vị[cite: 52, 55, 56].
+    \item \textbf{Tính nhân quả}: $h(n) = 0$ với $n < 0$[cite: 57, 61].
+    \item \textbf{FIR (Finite Impulse Response)}: Đáp ứng xung hữu hạn, luôn ổn định, có thể pha tuyến tính[cite: 64, 65].
+    \item \textbf{IIR (Infinite Impulse Response)}: Đáp ứng xung vô hạn, thường có cấu trúc đệ quy (hồi tiếp)[cite: 66, 68].
+\end{itemize}
+
+\section{Các loại bộ lọc tương tự tiêu biểu}
+\subsection{Bộ lọc Chebyshev}
+Bộ lọc này có vùng chuyển tiếp dốc hơn Butterworth nhưng xuất hiện gợn sóng (ripples)[cite: 74, 75].
+\begin{itemize}
+    \item \textbf{Loại I}: Gợn sóng trong dải thông, giảm đơn điệu trong dải dừng[cite: 161].
+    \item \textbf{Loại II (Chebyshev đảo)}: Đơn điệu dải thông, gợn sóng dải dừng[cite: 162].
+\end{itemize}
+\textbf{Công thức bậc tối thiểu}[cite: 150]:
+\begin{equation}
+    n = \text{ceil} \left( \frac{\cosh^{-1} \sqrt{\frac{10^{\alpha_s/10}-1}{10^{\alpha_p/10}-1}}}{\cosh^{-1}(\omega_s/\omega_p)} \right)
+\end{equation}
+
+\subsection{Bộ lọc Butterworth}
+Thiết kế để có đáp ứng biên độ phẳng tối đa (maximally flat) trong dải thông[cite: 177, 195].
+\begin{itemize}
+    \item Suy giảm -3 dB tại tần số cắt[cite: 192, 197].
+    \item Độ dốc suy giảm là $20n$ dB/decade với $n$ là bậc bộ lọc[cite: 199, 200].
+\end{itemize}
+
+\section{Bộ lọc Kalman}
+Là thuật toán đệ quy ước lượng trạng thái từ phép đo có nhiễu[cite: 462]. Chu trình gồm 2 giai đoạn[cite: 475]:
+\begin{enumerate}
+    \item \textbf{Dự đoán}: $\hat{x}_k^- = F\hat{x}_{k-1} + Bu_k$ và $P_k^- = FP_{k-1}F^T + Q$[cite: 479, 481].
+    \item \textbf{Cập nhật}: Tính hệ số $K$, cập nhật trạng thái $\hat{x}_k$ và hiệp phương sai $P_k$[cite: 483, 485, 486, 487].
+\end{enumerate}
+
+\section{Mô phỏng MATLAB}
+\subsection{Bài tập 3: Hàm Sinc}
+\begin{lstlisting}[language=Matlab]
+% bãi tập 3: biểu diễn hàm sinc(x) = sin(x)/x
+x = linspace(-pi, 5*pi, 1000);
+y = sin(x)./x;
+y(x==0) = 1;
+figure; plot(x, y, 'b', 'LineWidth', 2); grid on;
+\end{lstlisting}
+\textit{Nhận xét}: Đồ thị đạt cực đại bằng 1 tại $x=0$[cite: 833]. Biên độ giảm dần khi xa gốc tọa độ, đúng tính chất bộ lọc lý tưởng[cite: 836].
+
+\subsection{Bài tập 5: Thiết kế FIR dùng cửa sổ Kaiser}
+\begin{lstlisting}[language=Matlab]
+wp = 0.5*pi; ws = 0.7*pi; % Sửa lại từ 8.7*pi sang 0.7*pi theo nhận xét
+Ap = 0.5; As = 50;
+dw = ws - wp;
+N = ceil((As-8)/(2.285*dw));
+beta = 0.5842*(As-21)^0.4 + 0.07886*(As-21);
+wc = (wp+ws)/2;
+h = fir1(N, wc/pi, kaiser(N+1, beta));
+freqz(h, 1, 1024);
+\end{lstlisting}
+
+\section{So sánh Butterworth và Chebyshev II}
+Dưới đây là bảng so sánh đặc tính dựa trên kết quả mô phỏng bậc $n=32$[cite: 1019, 1039]:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Đặc tính} & \textbf{Butterworth} & \textbf{Chebyshev Type II} \\ \midrule
+Độ phẳng dải thông & Tối ưu nhất (Maximally Flat) & Rất tốt, không gợn sóng [cite: 1039] \\
+Độ dốc chuyển tiếp & Thoải hơn & Dốc hơn, vùng chuyển tiếp hẹp [cite: 1039] \\
+Dải dừng & Phẳng, giảm đều & Có gợn sóng (Equiripple) [cite: 1039] \\
+Đáp ứng pha & Tuyến tính hơn & Phức tạp, dễ trễ nhóm [cite: 1039] \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}
